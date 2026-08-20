@@ -1,0 +1,510 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Chime — SMS, categorized on-device">
+
+<style>
+  /* ---------- HERO ---------- */
+  header.hero{
+    padding:88px 0 64px;
+    border-bottom:1px solid var(--outline-variant);
+  }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:56px;
+    align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-60);
+    background:var(--container);
+    padding:6px 14px;
+    border-radius:var(--r-xl);
+    margin-bottom:22px;
+  }
+  .eyebrow .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--ink);
+  }
+  h1{
+    font-size:clamp(38px, 4.6vw, 58px);
+    line-height:1.04;
+    font-weight:600;
+    margin-bottom:22px;
+  }
+  .hero p.lede{
+    font-size:17px;
+    line-height:1.6;
+    color:var(--ink-60);
+    max-width:44ch;
+    margin-bottom:34px;
+  }
+  .hero-ctas{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .hero-note{
+    margin-top:18px;
+    font-size:13px;
+    color:var(--ink-45);
+  }
+  /* ---------- PHONE MOCK ---------- */
+  .phone{
+    width:290px;
+    margin:0 auto;
+    background:var(--bg);
+    border:1px solid var(--outline-variant);
+    border-radius:36px;
+    padding:14px;
+    box-shadow:0 24px 60px -20px var(--ink-15);
+  }
+  .phone-screen{
+    background:var(--surface);
+    border-radius:24px;
+    overflow:hidden;
+  }
+  .phone-search{
+    margin:14px;
+    height:44px;
+    border-radius:var(--r-xl);
+    background:var(--container);
+    display:flex;
+    align-items:center;
+    padding:0 16px;
+    gap:10px;
+    font-size:13px;
+    color:var(--ink-45);
+  }
+  .phone-search .app-mark{
+    width:14px; height:14px;
+    border-radius:4px;
+    background:var(--ink-45);
+    flex-shrink:0;
+  }
+  .chip-row{
+    display:flex;
+    gap:8px;
+    padding:0 14px 14px;
+    overflow:hidden;
+  }
+  .chip{
+    font-size:11.5px;
+    font-weight:600;
+    padding:7px 13px;
+    border-radius:var(--r-xl);
+    background:var(--container);
+    color:var(--ink-60);
+    white-space:nowrap;
+  }
+  .chip.active{
+    background:var(--ink);
+    color:var(--bg);
+  }
+  .msg-list{
+    padding:0 14px 18px;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .msg-row{
+    display:flex;
+    gap:11px;
+    align-items:flex-start;
+    padding:11px 6px;
+    border-radius:var(--r-md);
+  }
+  .avatar{
+    width:36px; height:36px;
+    border-radius:50%;
+    background:var(--container-high);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-80);
+    flex-shrink:0;
+  }
+  .msg-body{flex:1; min-width:0;}
+  .msg-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:8px;
+  }
+  .msg-name{
+    font-size:13.5px;
+    font-weight:600;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .msg-time{
+    font-size:11px;
+    color:var(--ink-45);
+    flex-shrink:0;
+  }
+  .msg-snippet{
+    font-size:12.5px;
+    color:var(--ink-60);
+    margin-top:2px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .unread .msg-name{font-weight:700;}
+  .unread .msg-snippet{color:var(--ink-80);}
+  .unread-dot{
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--ink);
+    flex-shrink:0;
+    margin-top:5px;
+  }
+  /* ---------- SECTIONS ---------- */
+  section{
+    padding:80px 0;
+    border-bottom:1px solid var(--outline-variant);
+  }
+  .section-head{
+    max-width:52ch;
+    margin-bottom:48px;
+  }
+  .section-label{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-45);
+    margin-bottom:14px;
+  }
+  h2{
+    font-size:clamp(26px, 3vw, 34px);
+    font-weight:600;
+    line-height:1.15;
+  }
+  .section-head p{
+    margin-top:14px;
+    font-size:15.5px;
+    line-height:1.65;
+    color:var(--ink-60);
+  }
+  .feature-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--outline-variant);
+    border:1px solid var(--outline-variant);
+    border-radius:var(--r-xl);
+    overflow:hidden;
+  }
+  .feature{
+    background:var(--bg);
+    padding:30px 26px;
+  }
+  .feature-index{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:12px;
+    color:var(--ink-30);
+    margin-bottom:16px;
+  }
+  .feature h3{
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  .feature p{
+    font-size:13.5px;
+    line-height:1.6;
+    color:var(--ink-60);
+  }
+  /* ---------- SCREENSHOTS ---------- */
+  .screenshot-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:16px;
+  }
+  .screenshot-cell{
+    border-radius:var(--r-lg);
+    overflow:hidden;
+    border:1px solid var(--outline-variant);
+    background:var(--surface);
+  }
+  .screenshot-cell img{
+    width:100%;
+    display:block;
+  }
+  /* ---------- PRIVACY BAND ---------- */
+  .privacy{
+    background:var(--ink);
+    color:var(--bg);
+    border-bottom:none;
+  }
+  .privacy .wrap{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:56px;
+    align-items:center;
+  }
+  .privacy .section-label{color:rgba(255,255,255,0.5);}
+  .privacy h2{color:var(--bg);}
+  .privacy p.lede{
+    color:rgba(255,255,255,0.65);
+    font-size:15.5px;
+    line-height:1.65;
+    margin-top:14px;
+    max-width:46ch;
+  }
+  .privacy-list{
+    display:flex;
+    flex-direction:column;
+    gap:0;
+  }
+  .privacy-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 0;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+    font-size:14.5px;
+  }
+  .privacy-row:last-child{border-bottom:none;}
+  .privacy-row .k{color:rgba(255,255,255,0.55);}
+  .privacy-row .v{font-weight:600;}
+  /* ---------- STACK ---------- */
+  .stack-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .stack-pill{
+    font-size:13px;
+    font-weight:500;
+    padding:9px 16px;
+    border-radius:var(--r-xl);
+    background:var(--container);
+    color:var(--ink-80);
+  }
+  /* ---------- CTA ---------- */
+  .cta{
+    padding:96px 0;
+    text-align:center;
+    border-bottom:none;
+  }
+  .cta h2{margin-bottom:16px;}
+  .cta p{
+    color:var(--ink-60);
+    font-size:15.5px;
+    margin-bottom:32px;
+  }
+  .cta .hero-ctas{justify-content:center;}
+  /* ---------- HERO IMAGE SLOT ---------- */
+  .img-slot{
+    position:relative;
+    aspect-ratio:9/18.5;
+    border-radius:24px;
+    overflow:hidden;
+    background:var(--surface);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .img-slot img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+  }
+  .img-placeholder{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    text-align:center;
+    padding:24px;
+  }
+  .img-placeholder .icon{
+    width:40px; height:40px;
+    border-radius:12px;
+    border:1.5px solid var(--ink-30);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:6px;
+  }
+  .img-placeholder .icon::before{
+    content:"";
+    width:16px; height:16px;
+    border-radius:3px;
+    background:var(--ink-30);
+  }
+  .img-placeholder .title{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-60);
+  }
+  .img-placeholder .sub{
+    font-size:11.5px;
+    color:var(--ink-30);
+  }
+  @media (max-width:860px){
+    .hero .wrap{grid-template-columns:1fr; gap:48px;}
+    .hero .phone{order:-1;}
+    .feature-grid{grid-template-columns:1fr;}
+    .privacy .wrap{grid-template-columns:1fr;}
+  }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>On-device categorization</div>
+      <h1 class="display">Messages, sorted.<br>Nothing uploaded.</h1>
+      <p class="lede">Chime is a privacy-first SMS client for Android. A model on your phone learns to sort Personal, OTP, Banking, Promos, Carrier and Spam — and it never leaves the device.</p>
+      <div class="hero-ctas">
+        <a href="#get" class="btn btn-solid">Join Beta Testing</a>
+        <a href="#features" class="btn btn-outline">See what it does</a>
+      </div>
+      <p class="hero-note">Android 13+ · No account · No cloud · No telemetry</p>
+    </div>
+
+    <div class="phone">
+      <div class="phone-screen img-slot">
+        <img src="/hero.png" alt="Chime inbox screenshot">
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">Features</div>
+      <h2 class="display">Built for reading less, knowing more.</h2>
+      <p>Every feature is tuned toward getting through your inbox faster — without a server in the loop.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="feature-index">01</div>
+        <h3>On-device categorization</h3>
+        <p>A pre-trained classifier sorts every thread into Personal, OTP, Banking, Promos, Carrier or Spam, and retrains locally whenever you correct it.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-index">02</div>
+        <h3>Custom categories</h3>
+        <p>Create your own categories with keyword heuristics, and tune each one's classification weight by hand.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-index">03</div>
+        <h3>Move with undo</h3>
+        <p>Long-press to move a thread — a floating pill gives you a four-second window to undo, in the inbox or the thread itself.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-index">04</div>
+        <h3>Scheduled messages</h3>
+        <p>Queue a message for later. Delivery is handled by WorkManager, so it goes out even if Chime isn't open.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-index">05</div>
+        <h3>Full-text search</h3>
+        <p>An FTS4 index makes search instant across every thread, auto-focused the moment you open it.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-index">06</div>
+        <h3>Custom swipe actions</h3>
+        <p>Set what left and right swipes do per thread — archive, delete, mark read, your call.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-index">07</div>
+        <h3>Media gallery</h3>
+        <p>Every photo and MMS attachment in a thread, laid out in its own gallery view.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-index">08</div>
+        <h3>Trash, not delete</h3>
+        <p>Deleted conversations sit in Trash before they're gone for good.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-index">09</div>
+        <h3>Monochrome theme</h3>
+        <p>Dynamic Material You color, or a static black-and-white scheme — with Rounded, Squared or Extra-rounded corners throughout.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="screenshots">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">Screenshots</div>
+      <h2 class="display">See it in action.</h2>
+    </div>
+    <div class="screenshot-grid">
+      {[1,2,3,4,5,6,7,8].map(n => (
+        <div class="screenshot-cell">
+          <img src={`/Demo/${n}.png`} alt={`Chime screenshot ${n}`} loading="lazy">
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section id="privacy" class="privacy">
+  <div class="wrap">
+    <div>
+      <div class="section-label">Privacy</div>
+      <h2 class="display">The model lives on your phone. That's the whole design.</h2>
+      <p class="lede">Categorization, search and training all run locally. There's no account to create and no server that ever sees a message.</p>
+    </div>
+    <div class="privacy-list">
+      <div class="privacy-row"><span class="k">Cloud processing</span><span class="v">None</span></div>
+      <div class="privacy-row"><span class="k">Accounts required</span><span class="v">None</span></div>
+      <div class="privacy-row"><span class="k">Telemetry</span><span class="v">None</span></div>
+      <div class="privacy-row"><span class="k">Categorization</span><span class="v">On-device</span></div>
+      <div class="privacy-row"><span class="k">Model retraining</span><span class="v">On-device</span></div>
+      <div class="privacy-row"><span class="k">Crash reports</span><span class="v">Captured on-device</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">Under the hood</div>
+      <h2 class="display">Kotlin, Compose, Material 3.</h2>
+      <p>A conventional, well-supported Android stack — nothing exotic to maintain.</p>
+    </div>
+    <div class="stack-list">
+      <span class="stack-pill">Kotlin 2.2.10</span>
+      <span class="stack-pill">Jetpack Compose · BOM 2026.02.01</span>
+      <span class="stack-pill">Material 3</span>
+      <span class="stack-pill">Navigation Compose 2.9.8</span>
+      <span class="stack-pill">SQLite</span>
+      <span class="stack-pill">DataStore Preferences</span>
+      <span class="stack-pill">WorkManager 2.9.0</span>
+      <span class="stack-pill">Coil 2.6.0</span>
+      <span class="stack-pill">JSoup 1.18.3</span>
+      <span class="stack-pill">minSdk 33 · compileSdk 37</span>
+    </div>
+  </div>
+</section>
+
+<section id="get" class="cta">
+  <div class="wrap">
+    <h2 class="display">Be one of the first to try Chime<br>before it hits the Play Store.</h2>
+    <p>Requires Android 13 or later. Beta testers get early builds and a direct line to what ships next.</p>
+    <div class="hero-ctas">
+      <a href="#" class="btn btn-solid">Join Beta Testing</a>
+      <a href="#" class="btn btn-outline">View source</a>
+    </div>
+  </div>
+</section>
+
+</Base>

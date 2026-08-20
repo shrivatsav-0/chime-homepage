@@ -1,0 +1,96 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Terms of Service — Chime" description="Terms of service for the Chime SMS app.">
+
+<style>
+  .legal{
+    padding:80px 0;
+    border-bottom:none;
+  }
+  .legal .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  .legal h1{
+    font-size:clamp(30px, 3.6vw, 42px);
+    line-height:1.1;
+    font-weight:600;
+    margin-bottom:12px;
+  }
+  .legal .updated{
+    font-size:13px;
+    color:var(--ink-45);
+    margin-bottom:48px;
+  }
+  .legal h2{
+    font-size:clamp(20px, 2.2vw, 24px);
+    font-weight:600;
+    line-height:1.25;
+    margin-top:48px;
+    margin-bottom:16px;
+  }
+  .legal p{
+    font-size:15.5px;
+    line-height:1.7;
+    color:var(--ink-60);
+    margin-bottom:16px;
+  }
+  .legal ol{
+    padding-left:20px;
+    margin-bottom:16px;
+    counter-reset:terms;
+    list-style:none;
+  }
+  .legal ol li{
+    counter-increment:terms;
+    font-size:15.5px;
+    line-height:1.7;
+    color:var(--ink-60);
+    margin-bottom:20px;
+  }
+  .legal ol li::before{
+    content:counter(terms) ".";
+    font-weight:600;
+    color:var(--ink);
+    margin-right:8px;
+  }
+  .legal a{
+    text-decoration:underline;
+    text-underline-offset:2px;
+  }
+  .legal a:hover{opacity:0.7;}
+</style>
+
+<div class="legal">
+  <div class="wrap">
+    <h1 class="display">Terms of Service</h1>
+    <p class="updated">Last updated: August 2026</p>
+
+    <ol>
+      <li>
+        <strong>Acceptance of Terms</strong><br>
+        By downloading or using Chime (the "App"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the App.
+      </li>
+      <li>
+        <strong>Description of Service</strong><br>
+        Chime is an SMS and MMS messaging application. It provides local processing for message categorization and utilizes third-party services to provide rich link previews and contact avatars as described in our <a href="/privacy">Privacy Policy</a>.
+      </li>
+      <li>
+        <strong>User Privacy and Data</strong><br>
+        Your privacy is important to us. Please refer to our <a href="/privacy">Privacy Policy</a> for information on how we handle network requests and data.
+      </li>
+      <li>
+        <strong>Limitation of Liability</strong><br>
+        The App is provided "as is" without warranty of any kind. We are not responsible for any data loss, message delivery failures, or third-party tracking resulting from the automatic fetching of URLs sent to your device.
+      </li>
+      <li>
+        <strong>Changes to Terms</strong><br>
+        We reserve the right to modify these terms at any time. Continued use of the App constitutes acceptance of the new terms.
+      </li>
+    </ol>
+  </div>
+</div>
+
+</Base>

@@ -1,0 +1,112 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Privacy Policy — Chime" description="How Chime handles network requests and data.">
+
+<style>
+  .legal{
+    padding:80px 0;
+    border-bottom:none;
+  }
+  .legal .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  .legal h1{
+    font-size:clamp(30px, 3.6vw, 42px);
+    line-height:1.1;
+    font-weight:600;
+    margin-bottom:12px;
+  }
+  .legal .updated{
+    font-size:13px;
+    color:var(--ink-45);
+    margin-bottom:48px;
+  }
+  .legal h2{
+    font-size:clamp(20px, 2.2vw, 24px);
+    font-weight:600;
+    line-height:1.25;
+    margin-top:48px;
+    margin-bottom:16px;
+  }
+  .legal p{
+    font-size:15.5px;
+    line-height:1.7;
+    color:var(--ink-60);
+    margin-bottom:16px;
+  }
+  .legal ol{
+    padding-left:20px;
+    margin-bottom:16px;
+  }
+  .legal ol li{
+    font-size:15.5px;
+    line-height:1.7;
+    color:var(--ink-60);
+    margin-bottom:20px;
+  }
+  .legal ol li strong{
+    color:var(--ink);
+  }
+  .legal ul{
+    list-style:disc;
+    padding-left:20px;
+    margin-bottom:16px;
+  }
+  .legal ul li{
+    font-size:15.5px;
+    line-height:1.7;
+    color:var(--ink-60);
+    margin-bottom:8px;
+  }
+  .legal code{
+    font-family:ui-monospace, monospace;
+    font-size:13.5px;
+    background:var(--container);
+    padding:2px 6px;
+    border-radius:4px;
+  }
+  .legal a{
+    text-decoration:underline;
+    text-underline-offset:2px;
+  }
+  .legal a:hover{opacity:0.7;}
+</style>
+
+<div class="legal">
+  <div class="wrap">
+    <h1 class="display">Privacy Policy</h1>
+    <p class="updated">Last updated: August 2026</p>
+
+    <p><strong>Chime</strong> is built with a focus on a fast, modern SMS/MMS experience. To provide certain rich features, the app makes specific network requests under the hood.</p>
+
+    <h2>Data Collection and Network Activity</h2>
+    <p>While we do not collect telemetry or usage analytics on our own servers, the app does interact with third-party servers to power rich messaging features:</p>
+
+    <ol>
+      <li>
+        <strong>Link Previews (OpenGraph Metadata)</strong><br>
+        When you receive an SMS or MMS containing a URL, Chime automatically fetches metadata (such as the title, description, and image) from that URL so it can display a rich preview card.
+        <ul>
+          <li><strong>Privacy Impact:</strong> This automatic background fetch means that the server hosting the link will see a request originating from your IP address as soon as the message is rendered on your screen. This could potentially be used by senders as a read receipt or to log your IP address (zero-click tracking).</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Business Messaging Avatars (RCS/RBM)</strong><br>
+        To display logos for businesses you message, Chime attempts to guess the brand's website domain from their RBM address and automatically requests their favicon via <code>api.companyenrich.com</code>.
+        <ul>
+          <li><strong>Privacy Impact:</strong> This means your IP address and the domain names of the businesses you are interacting with via SMS/RCS are sent to a third-party API (<code>companyenrich.com</code>) to retrieve the logo.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <p>By using the app, you acknowledge and consent to these background network requests which are necessary for the rich previews and contact avatars.</p>
+
+    <h2>Local Processing</h2>
+    <p>Other features, such as message categorization (OTP, Personal, Transactions, Updates) and smart actions, are processed entirely locally on your device using on-device machine learning models. No message content is uploaded for these features.</p>
+  </div>
+</div>
+
+</Base>

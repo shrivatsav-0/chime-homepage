@@ -1,0 +1,257 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = "Chime — SMS, categorized on-device" } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<meta name="description" content={description}>
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:image" content="/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/og-image.png">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style is:global>
+  @font-face{
+    font-family:'Google Sans Flex';
+    src:url('/fonts/google_sans_flex.ttf') format('truetype');
+    font-weight:100 900;
+    font-display:swap;
+  }
+  :root{
+    --bg:#FFFFFF;
+    --surface:#FAFAFA;
+    --container-low:#F6F6F6;
+    --container:#F3F3F3;
+    --container-high:#EEEEEE;
+    --outline-variant:#E2E2E2;
+    --ink:#000000;
+    --ink-80:rgba(0,0,0,0.80);
+    --ink-60:rgba(0,0,0,0.60);
+    --ink-45:rgba(0,0,0,0.45);
+    --ink-30:rgba(0,0,0,0.30);
+    --ink-15:rgba(0,0,0,0.15);
+    --ink-08:rgba(0,0,0,0.08);
+    --inverse:#000000;
+    --on-inverse:#FFFFFF;
+    --nav-bg:rgba(255,255,255,0.86);
+    --r-sm:14px;
+    --r-md:16px;
+    --r-lg:20px;
+    --r-xl:24px;
+    color-scheme:light;
+  }
+  html[data-theme="dark"]{
+    --bg:#000000;
+    --surface:#0D0D0D;
+    --container-low:#0F0F0F;
+    --container:#141414;
+    --container-high:#1C1C1C;
+    --outline-variant:#2A2A2A;
+    --ink:#FFFFFF;
+    --ink-80:rgba(255,255,255,0.80);
+    --ink-60:rgba(255,255,255,0.60);
+    --ink-45:rgba(255,255,255,0.45);
+    --ink-30:rgba(255,255,255,0.30);
+    --ink-15:rgba(255,255,255,0.15);
+    --ink-08:rgba(255,255,255,0.08);
+    --inverse:#FFFFFF;
+    --on-inverse:#000000;
+    --nav-bg:rgba(0,0,0,0.86);
+    color-scheme:dark;
+  }
+  html{transition:background 200ms ease;}
+  body{transition:background 200ms ease, color 200ms ease;}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Google Sans Flex', -apple-system, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .display{
+    font-family:'Space Grotesk', 'Inter', sans-serif;
+    letter-spacing:-0.02em;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:var(--nav-bg);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--outline-variant);
+  }
+  nav .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:64px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:18px;
+  }
+  .logo{
+    width:26px; height:26px;
+    color:var(--ink);
+    flex-shrink:0;
+  }
+  footer .logo{width:20px; height:20px;}
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:28px;
+    font-size:14px;
+    font-weight:500;
+    color:var(--ink-60);
+  }
+  .nav-links a:hover{color:var(--ink);}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 20px;
+    border-radius:var(--r-xl);
+    font-weight:600;
+    font-size:14px;
+    letter-spacing:0.01em;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:transform 160ms cubic-bezier(.34,1.56,.64,1), opacity 160ms ease;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-solid{background:var(--ink); color:var(--bg);}
+  .btn-solid:hover{opacity:0.85;}
+  .btn-outline{border-color:var(--ink-15); color:var(--ink);}
+  .btn-outline:hover{background:var(--container);}
+  .theme-toggle{
+    width:38px; height:38px;
+    border-radius:50%;
+    border:1px solid var(--ink-15);
+    background:transparent;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    flex-shrink:0;
+    position:relative;
+  }
+  .theme-toggle:hover{background:var(--container);}
+  .theme-toggle .sun,
+  .theme-toggle .moon{
+    position:absolute;
+    width:16px; height:16px;
+    transition:opacity 180ms ease, transform 180ms ease;
+  }
+  .theme-toggle .sun{
+    border-radius:50%;
+    border:1.6px solid var(--ink);
+  }
+  .theme-toggle .moon{
+    border-radius:50%;
+    box-shadow:5px -3px 0 0 var(--ink);
+    background:transparent;
+    opacity:0;
+    transform:scale(0.6) rotate(-30deg);
+  }
+  html[data-theme="dark"] .theme-toggle .sun{opacity:0; transform:scale(0.6) rotate(30deg);}
+  html[data-theme="dark"] .theme-toggle .moon{opacity:1; transform:scale(1) rotate(0deg);}
+  .nav-right{display:flex; align-items:center; gap:12px;}
+  /* ---------- ANNOUNCEMENT BAR ---------- */
+  .announce{
+    background:var(--ink);
+    color:var(--bg);
+    text-align:center;
+    font-size:13px;
+    font-weight:500;
+    padding:10px 24px;
+  }
+  .announce strong{font-weight:700;}
+  .announce .arrow{margin-left:6px; opacity:0.6;}
+  footer{
+    padding:32px 0;
+  }
+  footer .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:13px;
+    color:var(--ink-45);
+  }
+  footer .brand{font-size:14px;}
+  @media (max-width:860px){
+    .nav-links{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="announce">
+  <strong>Launching on the Play Store soon</strong> — join the beta to get in early<span class="arrow">→</span>
+</div>
+
+<nav>
+  <div class="wrap">
+    <a href="/" class="brand"><svg class="logo" viewBox="0 0 80 80" fill="none"><path d="M40 12 A28 28 0 0 1 40 68" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M40 22 A18 18 0 0 1 40 58" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M40 32 A8 8 0 0 1 40 48" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>Chime</a>
+    <div class="nav-links">
+      <a href="/#features">Features</a>
+      <a href="/#privacy">Privacy</a>
+      <a href="/#stack">Tech</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms</a>
+    </div>
+    <div class="nav-right">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <span class="sun"></span>
+        <span class="moon"></span>
+      </button>
+      <a href="#get" class="btn btn-solid">Join Beta</a>
+    </div>
+  </div>
+</nav>
+
+<slot />
+
+<footer>
+  <div class="wrap">
+    <div class="brand"><svg class="logo" viewBox="0 0 80 80" fill="none"><path d="M40 12 A28 28 0 0 1 40 68" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M40 22 A18 18 0 0 1 40 58" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M40 32 A8 8 0 0 1 40 48" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>Chime</div>
+    <div>Private project</div>
+  </div>
+</footer>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+  const stored = localStorage.getItem('theme');
+  if (stored) html.setAttribute('data-theme', stored);
+  else if (window.matchMedia('(prefers-color-scheme: dark)').matches) html.setAttribute('data-theme', 'dark');
+  toggle?.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+</script>
+</body>
+</html>
