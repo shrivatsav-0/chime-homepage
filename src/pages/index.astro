@@ -241,6 +241,74 @@ import Base from '../layouts/Base.astro';
   .screenshot-cell img{
     width:100%;
     display:block;
+    cursor:pointer;
+    transition:opacity 160ms ease;
+  }
+  .screenshot-cell img:hover{opacity:0.85;}
+  /* ---------- LIGHTBOX ---------- */
+  .lightbox{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    background:rgba(0,0,0,0.92);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 200ms ease;
+  }
+  .lightbox.open{opacity:1; pointer-events:auto;}
+  .lightbox img{
+    max-width:90vw;
+    max-height:90vh;
+    object-fit:contain;
+    border-radius:8px;
+    user-select:none;
+  }
+  .lightbox-close{
+    position:absolute;
+    top:20px; right:20px;
+    width:40px; height:40px;
+    border-radius:50%;
+    border:none;
+    background:rgba(255,255,255,0.15);
+    color:#fff;
+    font-size:20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background 160ms ease;
+  }
+  .lightbox-close:hover{background:rgba(255,255,255,0.3);}
+  .lightbox-nav{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:48px; height:48px;
+    border-radius:50%;
+    border:none;
+    background:rgba(255,255,255,0.15);
+    color:#fff;
+    font-size:22px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background 160ms ease;
+  }
+  .lightbox-nav:hover{background:rgba(255,255,255,0.3);}
+  .lightbox-prev{left:20px;}
+  .lightbox-next{right:20px;}
+  .lightbox-counter{
+    position:absolute;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    color:rgba(255,255,255,0.7);
+    font-size:14px;
+    font-weight:500;
   }
   /* ---------- PRIVACY BAND ---------- */
   .privacy{
@@ -254,10 +322,10 @@ import Base from '../layouts/Base.astro';
     gap:56px;
     align-items:center;
   }
-  .privacy .section-label{color:rgba(255,255,255,0.5);}
+  .privacy .section-label{color:color-mix(in srgb, var(--bg) 50%, transparent);}
   .privacy h2{color:var(--bg);}
   .privacy p.lede{
-    color:rgba(255,255,255,0.65);
+    color:color-mix(in srgb, var(--bg) 65%, transparent);
     font-size:15.5px;
     line-height:1.65;
     margin-top:14px;
@@ -273,11 +341,11 @@ import Base from '../layouts/Base.astro';
     justify-content:space-between;
     align-items:center;
     padding:18px 0;
-    border-bottom:1px solid rgba(255,255,255,0.12);
+    border-bottom:1px solid color-mix(in srgb, var(--bg) 12%, transparent);
     font-size:14.5px;
   }
   .privacy-row:last-child{border-bottom:none;}
-  .privacy-row .k{color:rgba(255,255,255,0.55);}
+  .privacy-row .k{color:color-mix(in srgb, var(--bg) 55%, transparent);}
   .privacy-row .v{font-weight:600;}
   /* ---------- STACK ---------- */
   .stack-list{
@@ -320,7 +388,7 @@ import Base from '../layouts/Base.astro';
   .img-slot img{
     width:100%;
     height:100%;
-    object-fit:contain;
+    object-fit:fill;
   }
   .img-placeholder{
     display:flex;
@@ -359,6 +427,13 @@ import Base from '../layouts/Base.astro';
     .hero .phone{order:-1;}
     .feature-grid{grid-template-columns:1fr;}
     .privacy .wrap{grid-template-columns:1fr;}
+    .screenshot-grid{grid-template-columns:repeat(2, 1fr);}
+    .cta .hero-ctas{flex-direction:column; align-items:center;}
+  }
+  @media (max-width:480px){
+    .screenshot-grid{grid-template-columns:1fr;}
+    .hero-ctas{flex-direction:column;}
+    .hero-ctas .btn{width:100%; justify-content:center;}
   }
 </style>
 
@@ -506,5 +581,41 @@ import Base from '../layouts/Base.astro';
     </div>
   </div>
 </section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lb-close" aria-label="Close">&times;</button>
+  <button class="lightbox-nav lightbox-prev" id="lb-prev" aria-label="Previous">&#8249;</button>
+  <button class="lightbox-nav lightbox-next" id="lb-next" aria-label="Next">&#8250;</button>
+  <img id="lb-img" src="" alt="Screenshot preview">
+  <div class="lightbox-counter" id="lb-counter"></div>
+</div>
+
+<script>
+  const images = Array.from(document.querySelectorAll('.screenshot-cell img'));
+  const lightbox = document.getElementById('lightbox')!;
+  const lbImg = document.getElementById('lb-img') as HTMLImageElement;
+  const lbCounter = document.getElementById('lb-counter')!;
+  let current = 0;
+
+  function show(i: number) {
+    current = (i + images.length) % images.length;
+    lbImg.src = images[current].getAttribute('src') || '';
+    lbCounter.textContent = `${current + 1} / ${images.length}`;
+  }
+
+  images.forEach((img, i) => img.addEventListener('click', () => { show(i); lightbox.classList.add('open'); }));
+
+  document.getElementById('lb-close')!.addEventListener('click', () => lightbox.classList.remove('open'));
+  document.getElementById('lb-prev')!.addEventListener('click', () => show(current - 1));
+  document.getElementById('lb-next')!.addEventListener('click', () => show(current + 1));
+
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') lightbox.classList.remove('open');
+    if (e.key === 'ArrowLeft') show(current - 1);
+    if (e.key === 'ArrowRight') show(current + 1);
+  });
+</script>
 
 </Base>
