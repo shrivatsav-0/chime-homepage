@@ -431,6 +431,20 @@ const usdPrice = `$${PRICE_USD.toFixed(2)}`;
     color:var(--ink-45);
     margin-bottom:28px;
   }
+  .cta .refund-note{
+    font-size:13px;
+    line-height:1.6;
+    color:var(--ink-45);
+    max-width:46ch;
+    margin:0 auto 28px;
+  }
+  .cta .refund-note a{
+    color:var(--ink-60);
+    text-decoration:underline;
+    text-underline-offset:2px;
+    transition:color 160ms ease;
+  }
+  .cta .refund-note a:hover{color:var(--ink);}
   /* ---------- HERO IMAGE SLOT ---------- */
   .img-slot{
     position:relative;
@@ -687,6 +701,7 @@ const usdPrice = `$${PRICE_USD.toFixed(2)}`;
       <span class="price-meta">one-time purchase · no subscription</span>
     </p>
     <p class="cta-note">Requires Android 11 or later — Chime asks to become your default SMS app.</p>
+    <p class="refund-note">Refunds can be requested through Google Play within 48 hours of purchase. See the <a href="/terms">Terms of Service</a>.</p>
     <div class="hero-ctas">
       <a href="https://play.google.com/store/apps/details?id=com.shrivatsav.chime" target="_blank" rel="noopener" class="btn btn-solid">
         <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#00D76F" d="M3 2 21.5 10.6 14 12 3 2Z"/><path fill="#00A0FF" d="M3 2 14 12 3 22V2Z"/><path fill="#FFCE00" d="M14 12 21.5 10.6v2.8L14 12Z"/><path fill="#FF3A44" d="M3 22 14 12l7.5 1.4L3 22Z"/></svg>

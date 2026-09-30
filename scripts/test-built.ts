@@ -26,6 +26,14 @@ check('no ECB disclaimer', !html.includes('ECB'));
 check('no nav link to #convert', !html.includes('href="/#convert"'));
 check('no rates API URL in output', !html.includes('frankfurter'));
 
+console.log('\n--- refund policy ---');
+const terms = readFileSync('dist/terms/index.html', 'utf8');
+check('landing page states 48-hour window', html.includes('within 48 hours of purchase'));
+check('terms define a Refunds section', terms.includes('Refunds'));
+check('terms cite the 48-hour window', terms.includes('48 hours of purchase'));
+check('terms preserve statutory rights', terms.includes('statutory rights'));
+check('terms link to statutory carve-out', terms.includes('European Economic Area'));
+
 console.log('\n--- inline scripts ---');
 const inline = [...html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)];
 for (const [, body] of inline) {
